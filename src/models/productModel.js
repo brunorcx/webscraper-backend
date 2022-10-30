@@ -16,7 +16,6 @@ const productSchema = mongoose.Schema(
     },
     brand: {
       type: String,
-      required: [true, "Marca do produto é obrigatória"],
     },
     tags: {
       type: [String],
@@ -24,6 +23,12 @@ const productSchema = mongoose.Schema(
     },
     img: {
       type: String,
+      required: [true, "Deve conter uma imagem"],
+    },
+    id: {
+      type: String,
+      unique: true,
+      required: [true, "Deve conter um id único"],
     },
   },
   { collection: "produtos" }

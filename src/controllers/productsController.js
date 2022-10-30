@@ -5,6 +5,8 @@ const Product = require("../models/productModel.js");
 
 const router = express.Router();
 
+const { scrapeProducts } = require("../crawler/scraper");
+
 const getProducts = async (req, res) => {
   try {
     const product = await Product.find();
@@ -46,7 +48,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-const updateProduct = async (req, res) => {
+const patchProduct = async (req, res) => {
   const id = req.params.id;
   try {
     await Product.findOneAndUpdate(
@@ -67,6 +69,31 @@ const updateProduct = async (req, res) => {
     res.status(401).json({ message: error.message });
   }
 };
+const updateProducts = async (req, res) => {
+  const products = await scrapeProducts("https://supermercadogoiana.com.br/loja/departamentos/");
+
+  const bulkOps = products.map((product) => {
+    return {
+      updateOne: {
+        filter: {
+          id: product.id,
+        },
+        update: {
+          name: product.name,
+          tags: product.tags,
+          price: product.price,
+          img: product.img,
+        },
+        upsert: true,
+      },
+    };
+  });
+
+  Product.bulkWrite(bulkOps).then((res) => {
+    console.log("Res", res);
+    console.log("Documents Updated", res.modifiedCount);
+  });
+};
 
 const deleteProduct = async (req, res) => {
   const id = req.params.id;
@@ -82,5 +109,6 @@ const deleteProduct = async (req, res) => {
 module.exports.getProducts = getProducts;
 module.exports.createProduct = createProduct;
 module.exports.getProductID = getProductID;
-module.exports.updateProduct = updateProduct;
+module.exports.patchProduct = patchProduct;
+module.exports.updateProducts = updateProducts;
 module.exports.deleteProduct = deleteProduct;
