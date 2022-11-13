@@ -30,6 +30,14 @@ const productSchema = mongoose.Schema(
       unique: true,
       required: [true, "Deve conter um id único"],
     },
+    rating: {
+      type: Number,
+    },
+    mall: {
+      type: String,
+      unique: true,
+      required: [true, "Deve conter um super mercado"],
+    },
   },
   { collection: "produtos" }
 );
