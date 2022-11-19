@@ -35,7 +35,6 @@ const productSchema = mongoose.Schema(
     },
     mall: {
       type: String,
-      unique: true,
       required: [true, "Deve conter um super mercado"],
     },
   },

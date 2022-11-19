@@ -5,7 +5,7 @@ const Product = require("../models/productModel.js");
 
 const router = express.Router();
 
-const { scrapeProducts, scrapeProductsGaviao } = require("../crawler/scraper");
+const { scrapeProducts, scrapeProductsGaviao, scrapeProductsAtacadao } = require("../crawler/scraper");
 
 const getProducts = async (req, res) => {
   try {
@@ -75,7 +75,8 @@ const updateProducts = async (req, response) => {
     let prodGaviao = await scrapeProductsGaviao(
       "https://www.sitemercado.com.br/supermercadogaviao/boa-vista-loja-villeroy-centro-av-ville-roy/departamentos"
     );
-    products = products.concat(prodGaviao);
+    let prodAtacadao = await scrapeProductsAtacadao("https://www.atacadao.com.br");
+    products = products.concat(prodGaviao).concat(prodAtacadao);
 
     const bulkOps = products.map((product) => {
       return {
