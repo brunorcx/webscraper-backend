@@ -10,7 +10,7 @@ const { scrapeProducts, scrapeProductsGaviao, scrapeProductsAtacadao } = require
 const getProducts = async (req, res) => {
   try {
     res.header("Access-Control-Allow-Origin", "*");
-    const product = await Product.find();
+    const product = await Product.find(req.query ? req.query : {});
     res.status(200).json(product);
   } catch (error) {
     res.status(404).json({ message: error.message });
