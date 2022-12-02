@@ -76,6 +76,7 @@ const updateProducts = async (req, response) => {
       "https://www.sitemercado.com.br/supermercadogaviao/boa-vista-loja-villeroy-centro-av-ville-roy/departamentos"
     );
     let prodAtacadao = await scrapeProductsAtacadao("https://www.atacadao.com.br");
+
     products = products.concat(prodGaviao).concat(prodAtacadao);
 
     const bulkOps = products.map((product) => {
